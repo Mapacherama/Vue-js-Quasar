@@ -84,6 +84,7 @@
 <script>
 import { ref } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
+import { useQuasar } from 'quasar'
 
 export default {
   name: 'LayoutDefault',
@@ -93,6 +94,10 @@ export default {
   },
 
   setup () {
+        const $q = useQuasar()
+
+    // calling here; equivalent to when component is created
+    $q.dark.set(true)
     return {
       leftDrawerOpen: ref(false)
     }
