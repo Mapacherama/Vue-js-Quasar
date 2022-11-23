@@ -1,64 +1,67 @@
 <template>
-  <div>
-    <p>{{ title }}</p>
-    <ul>
-      <li v-for="todo in todos" :key="todo.id" @click="increment">
-        {{ todo.id }} - {{ todo.content }}
-      </li>
-    </ul>
-    <p>Count: {{ todoCount }} / {{ meta.totalCount }}</p>
-    <p>Active: {{ active ? 'yes' : 'no' }}</p>
-    <p>Clicks on todos: {{ clickCount }}</p>
+  <div class="q-pa-md q-gutter-sm">
+    <q-banner class="bg-primary text-white">
+      Unfortunately, the credit card did not go through, please try again.
+      <template v-slot:action>
+        <q-btn flat color="white" label="Dismiss" />
+        <q-btn flat color="white" label="Update Credit Card" />
+      </template>
+    </q-banner>
+
+    <q-banner class="bg-grey-3">
+      <template v-slot:avatar>
+        <q-icon name="signal_wifi_off" color="primary" />
+      </template>
+      You have lost connection to the internet. This app is offline.
+      <template v-slot:action>
+        <q-btn flat color="primary" label="Turn on Wifi" />
+      </template>
+    </q-banner>
+
+    <q-banner inline-actions class="text-white bg-red">
+      You have lost connection to the internet. This app is offline.
+      <template v-slot:action>
+        <q-btn flat color="white" label="Turn ON Wifi" />
+      </template>
+    </q-banner>
+  </div>
+  <div class="q-pa-md">
+    <q-btn-dropdown
+      color="pink"
+      label="Dropdown Button"
+      dropdown-icon="change_history"
+    >
+      <q-list>
+        <q-item clickable v-close-popup @click="onItemClick">
+          <q-item-section>
+            <q-item-label>Photos</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-close-popup @click="onItemClick">
+          <q-item-section>
+            <q-item-label>Videos</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-close-popup @click="onItemClick">
+          <q-item-section>
+            <q-item-label>Articles</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-btn-dropdown>
   </div>
 </template>
 
-<script lang="ts">
-import {
-  defineComponent,
-  PropType,
-  computed,
-  ref,
-  toRef,
-  Ref,
-} from 'vue';
-import { Todo, Meta } from './models';
-
-function useClickCount() {
-  const clickCount = ref(0);
-  function increment() {
-    clickCount.value += 1
-    return clickCount.value;
-  }
-
-  return { clickCount, increment };
-}
-
-function useDisplayTodo(todos: Ref<Todo[]>) {
-  const todoCount = computed(() => todos.value.length);
-  return { todoCount };
-}
-
-export default defineComponent({
-  name: 'ExampleComponent',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    todos: {
-      type: Array as PropType<Todo[]>,
-      default: () => []
-    },
-    meta: {
-      type: Object as PropType<Meta>,
-      required: true
-    },
-    active: {
-      type: Boolean
-    }
+<script>
+export default {
+  setup() {
+    return {
+      onItemClick() {
+        console.log('Clicked on an Item');
+      },
+    };
   },
-  setup (props) {
-    return { ...useClickCount(), ...useDisplayTodo(toRef(props, 'todos')) };
-  },
-});
+};
 </script>
